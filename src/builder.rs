@@ -10,7 +10,9 @@ use rustreexo::accumulator::pollard::Pollard;
 use tokio::sync::RwLock;
 use tokio::task;
 
-use floresta_chain::{AssumeValidArg, BlockchainError, ChainState, KvChainStore};
+use floresta_chain::{
+    pruned_utreexo::UpdatableChainstate, AssumeValidArg, BlockchainError, ChainState, KvChainStore,
+};
 use floresta_wire::{
     address_man::AddressMan, mempool::Mempool, node::UtreexoNode, running_node::RunningNode,
     UtreexoNodeConfig,
@@ -130,6 +132,24 @@ impl FlorestaClientBuilder {
         info!("starting bdk_floresta on {}", self.config.network);
         let node_task = task::spawn(node.run(sender));
 
+        // Start the SIGINT handler task
+        let sigint_task = {
+            let kill_signal = kill_signal.clone();
+            let chain = chain.clone();
+            Some(task::spawn(async move {
+                tokio::signal::ctrl_c()
+                    .await
+                    .expect("failed to initialize SIGINT handler");
+
+                info!("received SIGINT, stopping bdk_floresta");
+                info!("flushing chain to disk");
+                let _ = chain.flush();
+
+                let mut kill = kill_signal.write().await;
+                *kill = true;
+            }))
+        };
+
         Ok(FlorestaClient {
             config: self.config,
             debug: self.debug,
@@ -137,7 +157,7 @@ impl FlorestaClientBuilder {
             handle,
             kill_signal,
             node_task: Some(node_task),
-            sigint_task: None,
+            sigint_task,
         })
     }
 }
