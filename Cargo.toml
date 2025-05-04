@@ -1,6 +1,23 @@
 [package]
-name = "bdk-floresta"
+name = "bdk_floresta"
 version = "0.1.0"
 edition = "2021"
+authors = ["Luis Schwab <luisschwab@protonmail.com>"]
+description = "BDK blockchain integration with Floresta"
+license = "MIT"
+repository = "https://github.com/luisschwab/bdk-floresta"
+readme = "README.md"
+keywords = ["bitcoin", "bdk", "floresta"]
 
 [dependencies]
+anyhow = "1.0.97"
+bdk_wallet = "1.1.0"
+bitcoin = "0.32.5"
+chrono = "0.4.40"
+fern = { version = "0.7.1", features = ["colored"] }
+floresta-chain = { git = "https://github.com/vinteumorg/Floresta.git" }
+floresta-wire = { git = "https://github.com/vinteumorg/Floresta.git" }
+futures-channel = "0.3.31"
+log = "0.4.27"
+rustreexo = "0.4.0"
+tokio = "1.44.1"
