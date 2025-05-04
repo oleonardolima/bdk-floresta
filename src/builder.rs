@@ -4,6 +4,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use bitcoin::Network;
+use floresta_chain::AssumeValidArg;
 use futures_channel::oneshot;
 use log::info;
 use rustreexo::accumulator::pollard::Pollard;
@@ -11,7 +12,8 @@ use tokio::sync::RwLock;
 use tokio::task;
 
 use floresta_chain::{
-    pruned_utreexo::UpdatableChainstate, AssumeValidArg, BlockchainError, ChainState, KvChainStore,
+    pruned_utreexo::UpdatableChainstate, BlockchainError, ChainParams,
+    ChainState, KvChainStore,
 };
 use floresta_wire::{
     address_man::AddressMan, mempool::Mempool, node::UtreexoNode, running_node::RunningNode,
@@ -28,15 +30,17 @@ pub struct FlorestaClientBuilder {
 
 impl Default for FlorestaClientBuilder {
     fn default() -> Self {
+        let assume_utreexo_value = ChainParams::get_assume_utreexo(Network::Bitcoin.into());
+
         Self {
             config: UtreexoNodeConfig {
                 network: Network::Bitcoin,
                 datadir: format!("./data/{}", Network::Bitcoin),
                 compact_filters: false,
                 filter_start_height: None,
-                assume_utreexo: None,
+                assume_utreexo: Some(assume_utreexo_value),
                 pow_fraud_proofs: false,
-                backfill: false,
+                backfill: true,
                 user_agent: String::from("floresta-wire"),
                 allow_v1_fallback: true,
                 fixed_peer: None,
