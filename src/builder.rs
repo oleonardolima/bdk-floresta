@@ -33,6 +33,7 @@ impl Default for FlorestaClientBuilder {
 
         Self {
             config: UtreexoNodeConfig {
+                disable_dns_seeds: false,
                 network: Network::Bitcoin,
                 datadir: format!("./data/{}", Network::Bitcoin),
                 compact_filters: false,
@@ -73,8 +74,8 @@ impl FlorestaClientBuilder {
     }
 
     /// Set the log-level to debug.
-    pub fn debug(mut self, debug: bool) -> Self {
-        self.debug = debug;
+    pub fn debug(mut self) -> Self {
+        self.debug = true;
         self
     }
 
