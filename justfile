@@ -12,14 +12,14 @@ check:
 example name="example":
   cargo run --example {{name}} --release
 
-# Options: data-bitcoin, data-signet, lockfile
+# Options: bitcoin, signet, lockfile
 delete item="data":
   just _delete-{{item}}
 
-_delete-data-bitcoin:
+_delete-bitcoin:
   rm -rf data/bitcoin
 
-_delete-data-signet:
+_delete-signet:
   rm -rf data/signet
 
 _delete-lockfile:

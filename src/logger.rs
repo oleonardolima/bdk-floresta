@@ -56,7 +56,7 @@ pub fn setup_logger(debug: bool) -> Result<(), fern::InitError> {
             },
         )
         .level_for("floresta_chain", LevelFilter::Info)
-        .level_for("floresta_wire", LevelFilter::Info)
+        .level_for("floresta_wire", LevelFilter::Warn)
         .chain(std::io::stdout());
 
     dispatch.apply()?;

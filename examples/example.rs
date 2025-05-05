@@ -21,7 +21,7 @@ impl BlockConsumer for BlockPrinter {
 #[tokio::main]
 async fn main() -> Result<()> {
     let mut client = FlorestaClientBuilder::default()
-        .network(Network::Bitcoin)
+        .network(Network::Signet)
         .build()
         .await?;
 
@@ -53,14 +53,8 @@ async fn main() -> Result<()> {
                 client.shutdown().await?;
                 break;
             }
-            _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
+            _ = tokio::time::sleep(std::time::Duration::from_secs(10)) => {
                 if client.chain.is_in_ibd() {
-                    info!(
-                        "bdk_floresta is still in IBD [headers: {}, validated: {}]",
-                        client.get_height().await?,
-                        client.get_validation_height().await?
-                    );
-
                     if i % 10 == 0 && i != 0 {
                         let _ = client.chain.flush();
                         info!("flushed chain to disk");
@@ -75,7 +69,7 @@ async fn main() -> Result<()> {
                     i += 1;
                 } else {
                     info!("finished IBD");
-
+                    break;
                 }
             }
         }
