@@ -21,14 +21,14 @@ pub mod logger;
 pub struct FlorestaClient {
     /// Configuration parameters for [`FlorestaClient`].
     pub config: UtreexoNodeConfig,
-    /// Wheter to set the log level to debug.
+    /// Whether to set the log level to debug.
     pub debug: bool,
     /// The [`ChainState`] implementation to be used (persistence
     /// will be shared with [`bdk_wallet::Wallet`] in the future).
     pub chain: Arc<ChainState<KvChainStore<'static>>>,
     /// The handle used to send requests and receive responses from the underlying node.
     pub handle: NodeInterface,
-    /// Task handle for the undelying node.
+    /// Task handle for the underlying node.
     pub node_task: Option<JoinHandle<()>>,
     /// Stop signal for the node.
     pub kill_signal: Arc<RwLock<bool>>,

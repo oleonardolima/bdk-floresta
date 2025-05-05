@@ -12,8 +12,7 @@ use tokio::sync::RwLock;
 use tokio::task;
 
 use floresta_chain::{
-    pruned_utreexo::UpdatableChainstate, BlockchainError, ChainParams,
-    ChainState, KvChainStore,
+    pruned_utreexo::UpdatableChainstate, BlockchainError, ChainParams, ChainState, KvChainStore,
 };
 use floresta_wire::{
     address_man::AddressMan, mempool::Mempool, node::UtreexoNode, running_node::RunningNode,
