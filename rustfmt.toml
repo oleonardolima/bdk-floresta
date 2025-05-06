@@ -1,0 +1,4 @@
+chain_width = 60
+comment_width = 140
+format_code_in_doc_comments = true
+wrap_comments = true
