@@ -29,7 +29,8 @@ pub struct FlorestaClientBuilder {
 
 impl Default for FlorestaClientBuilder {
     fn default() -> Self {
-        let assume_utreexo_value = ChainParams::get_assume_utreexo(Network::Bitcoin.into());
+        let assume_utreexo_value =
+            ChainParams::get_assume_utreexo(Network::Bitcoin).expect("Unsupported network");
 
         Self {
             config: UtreexoNodeConfig {
@@ -88,7 +89,7 @@ impl FlorestaClientBuilder {
         let chain = Arc::new(
             match ChainState::<KvChainStore>::load_chain_state(
                 chain_store,
-                self.config.network.into(),
+                self.config.network,
                 AssumeValidArg::Disabled,
             ) {
                 Ok(chainstate) => {
@@ -104,7 +105,7 @@ impl FlorestaClientBuilder {
 
                         ChainState::<KvChainStore>::new(
                             chain_store,
-                            self.config.network.into(),
+                            self.config.network,
                             AssumeValidArg::Disabled,
                         )
                     }
