@@ -43,10 +43,10 @@ impl FlorestaClient {
         peer: SocketAddr,
     ) -> anyhow::Result<bool, tokio::sync::oneshot::error::RecvError> {
         if let Ok(true) = self.handle.connect(peer.ip(), peer.port()).await {
-            info!("connected to {}", peer);
+            info!("connected to {peer}");
             Ok(true)
         } else {
-            warn!("failed to connect to {}", peer);
+            warn!("failed to connect to {peer}");
             Ok(false)
         }
     }

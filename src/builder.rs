@@ -70,7 +70,7 @@ impl FlorestaClientBuilder {
     /// Set a custom network to a [`FlorestaClient`].
     pub fn network(mut self, network: bitcoin::Network) -> Self {
         self.config.network = network;
-        self.config.datadir = format!("./data/{}", network);
+        self.config.datadir = format!("./data/{network}");
         self
     }
 
